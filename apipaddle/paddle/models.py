@@ -8,9 +8,9 @@ class ProductType(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, blank=True, default=True)
-    price_buy = models.DecimalField(max_digits=5, decimal_places=4, default=0)
-    price_sell = models.DecimalField(max_digits=5, decimal_places=4, default=0)
-    iva = models.DecimalField(max_digits=5, decimal_places=4, default=0)
+    price_buy = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    price_sell = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    iva = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     picture = models.TextField(blank=True, default=True)
     stockeable = models.BooleanField(default=False)
     type = models.ForeignKey(
@@ -22,9 +22,9 @@ class Product(models.Model):
 
 class StockMovement(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=5, decimal_places=4)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
-    price = models.DecimalField(max_digits=5, decimal_places=4)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     income = models.BooleanField(default=True)
 
 
@@ -42,8 +42,8 @@ class Client(models.Model):
 
 class Sell(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=5, decimal_places=4)
-    price = models.DecimalField(max_digits=5, decimal_places=4)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
