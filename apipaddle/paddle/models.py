@@ -1,15 +1,23 @@
 from django.db import models
 
 
-class Product(models.Model):
-    code = models.CharField(max_length=100)
+class ProductType(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=200)
-    price_buy = models.DecimalField(max_digits=5, decimal_places=4)
-    price_sell = models.DecimalField(max_digits=5, decimal_places=4)
-    iva = models.DecimalField(max_digits=5, decimal_places=4)
-    picture = models.TextField()
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200, blank=True, default=True)
+    price_buy = models.DecimalField(max_digits=5, decimal_places=4, default=0)
+    price_sell = models.DecimalField(max_digits=5, decimal_places=4, default=0)
+    iva = models.DecimalField(max_digits=5, decimal_places=4, default=0)
+    picture = models.TextField(blank=True, default=True)
     stockeable = models.BooleanField(default=False)
+    type = models.ForeignKey(
+        ProductType, on_delete=models.CASCADE, null=True, default=None)
+
+    def __str__(self):
+        return self.name
 
 
 class StockMovement(models.Model):
@@ -27,6 +35,9 @@ class Client(models.Model):
     email = models.CharField(max_length=50)
     address = models.CharField(max_length=150)
     picture = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 
 class Sell(models.Model):

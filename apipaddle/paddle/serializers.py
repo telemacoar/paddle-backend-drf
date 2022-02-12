@@ -3,17 +3,21 @@ from paddle.models import Product, Court, StockMovement, Client, Sell, Appointme
 
 
 class ProductSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Product
-        fields = ['id', 'name', 'code', 'description', 'price_buy',
+        fields = ['id', 'name', 'description', 'price_buy',
                   'price_sell', 'iva', 'picture', 'stockeable']
 
 
-class StockMovementSerializer(serializers.ModelSerializer):
+class StockMovementSerializer(serializers.HyperlinkedModelSerializer):
+
+    product = serializers.ReadOnlyField(source='product.name')
+
     class Meta:
         model = StockMovement
         fields = ['id', 'product_id', 'amount', 'date', 'price',
-                  'income']
+                  'income', 'product', 'type']
 
 
 class CourtSerializer(serializers.ModelSerializer):
@@ -28,10 +32,14 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'address', 'phone', 'cuit', 'phone', 'picture']
 
 
-class SellSerializer(serializers.ModelSerializer):
+class SellSerializer(serializers.HyperlinkedModelSerializer):
+    product = serializers.ReadOnlyField(source='product.name')
+    client = serializers.ReadOnlyField(source='client.name')
+
     class Meta:
         model = Sell
-        fields = ['id', 'product_id', 'client_id', 'amout', 'price', 'date']
+        fields = ['id', 'product_id', 'client_id',
+                  'amount', 'price', 'date', 'product', 'client']
 
 
 class TimeAppoinmentSerializer(serializers.ModelSerializer):
