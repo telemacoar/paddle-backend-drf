@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from paddle.models import Product, Court, StockMovement, Client, Sell, Appointment, DateAppointment, TimeAppointment
+from paddle.models import Product, Court, StockMovement, Client, Sale, Appointment, DateAppointment, TimeAppointment, SaleItem, ProductType
+
+
+class ProductTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductType
+        fields = ['id', 'name']
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -7,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price_buy',
-                  'price_sell', 'iva', 'picture', 'stockeable']
+                  'price_sale', 'iva', 'picture', 'stockeable']
 
 
 class StockMovementSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,7 +24,7 @@ class StockMovementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StockMovement
         fields = ['id', 'product_id', 'amount', 'date', 'price',
-                  'income', 'product', 'type']
+                  'income', 'product']
 
 
 class CourtSerializer(serializers.ModelSerializer):
@@ -32,14 +39,21 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'address', 'phone', 'cuit', 'phone', 'picture']
 
 
-class SellSerializer(serializers.HyperlinkedModelSerializer):
+class SaleItemSerializer(serializers.HyperlinkedModelSerializer):
     product = serializers.ReadOnlyField(source='product.name')
-    client = serializers.ReadOnlyField(source='client.name')
 
     class Meta:
-        model = Sell
-        fields = ['id', 'product_id', 'client_id',
-                  'amount', 'price', 'date', 'product', 'client']
+        model = SaleItem
+        fields = ['id', 'product_id', 'amount', 'price', 'product']
+
+
+class SaleSerializer(serializers.HyperlinkedModelSerializer):
+    client = serializers.ReadOnlyField(source='client.name')
+    items = SaleItemSerializer(many=True)
+
+    class Meta:
+        model = Sale
+        fields = ['id',  'client_id', 'date',  'client', 'items']
 
 
 class TimeAppoinmentSerializer(serializers.ModelSerializer):

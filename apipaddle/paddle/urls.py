@@ -13,7 +13,9 @@ urlpatterns = [
          name='clientes_detail'),
     path('stocks/', views.StockMovementList.as_view()),
     path('stocks/<int:pk>', views.StockMovementDetailList.as_view()),
-    path('sales/', views.SellList.as_view()),
-    path('sales/<int:pk>', views.SellDetailList.as_view()),
+    path('sales/', views.SaleList.as_view()),
+    path('sales/<int:pk>', views.SaleDetailList.as_view()),
+    path('salesitems/', views.SaleItemsList.as_view()),
+    path('salesitems/<int:pk>', views.SaleItemsDetailList.as_view()),
 
 ]

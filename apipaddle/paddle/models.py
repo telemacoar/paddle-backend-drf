@@ -9,7 +9,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, blank=True, default=True)
     price_buy = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    price_sell = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    price_sale = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     iva = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     picture = models.TextField(blank=True, default=True)
     stockeable = models.BooleanField(default=False)
@@ -40,12 +40,17 @@ class Client(models.Model):
         return self.name
 
 
-class Sell(models.Model):
+class Sale(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+
+
+class SaleItem(models.Model):
+    sale = models.ForeignKey(
+        Sale, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
 
 class Court(models.Model):

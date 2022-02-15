@@ -1,7 +1,17 @@
 from django.shortcuts import render
-from paddle.models import Product, Court, Client, StockMovement, Sell
-from paddle.serializers import ProductSerializer, CourtSerializer, ClientSerializer, StockMovementSerializer, SellSerializer
+from paddle.models import Product, Court, Client, StockMovement, Sale, ProductType, SaleItem
+from paddle.serializers import ProductSerializer, CourtSerializer, ClientSerializer, StockMovementSerializer, SaleSerializer, SaleItemSerializer, ProductTypeSerializer
 from rest_framework import generics
+
+
+class ProductTypeList(generics.ListCreateAPIView):
+    queryset = ProductType.objects.all()
+    serializer_class = ProductTypeSerializer
+
+
+class ProductTypeDetailList(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ProductType.objects.all()
+    serializer_class = ProductTypeSerializer
 
 
 class ProductList(generics.ListCreateAPIView):
@@ -44,11 +54,21 @@ class StockMovementDetailList(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StockMovementSerializer
 
 
-class SellList(generics.ListCreateAPIView):
-    queryset = Sell.objects.all()
-    serializer_class = SellSerializer
+class SaleList(generics.ListCreateAPIView):
+    queryset = Sale.objects.all()
+    serializer_class = SaleSerializer
 
 
-class SellDetailList(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Sell.objects.all()
-    serializer_class = SellSerializer
+class SaleDetailList(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Sale.objects.all()
+    serializer_class = SaleSerializer
+
+
+class SaleItemsList(generics.ListCreateAPIView):
+    queryset = SaleItem.objects.all()
+    serializer_class = SaleItemSerializer
+
+
+class SaleItemsDetailList(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SaleItem.objects.all()
+    serializer_class = SaleItemSerializer
